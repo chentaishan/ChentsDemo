@@ -44,4 +44,6 @@ dependencies {
     implementation files('libs/umeng-shareboard-widget-6.9.4.jar')
     implementation files('libs/umeng-sharetool-6.9.4.jar')
     implementation files('libs/utdid4all-1.1.5.3_proguard.jar')
+
+    implementation 'pub.devrel:easypermissions:2.0.1'
 }
