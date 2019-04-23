@@ -23,7 +23,7 @@ public class MyApp extends Application {
 
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         //豆瓣RENREN平台目前只能在服务器端配置
-        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
+        PlatformConfig.setSinaWeibo("1344763285", "5f8fb8a6f0677d1b1f84808e72fd2acd","http://sns.whalecloud.com");
 //        PlatformConfig.setYixin("yxc0614e80c9304c11b0391514d09f13bf");
         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
 //        PlatformConfig.setTwitter("3aIN7fuF685MuZ7jtXkQxalyi", "MK6FEYG63eWcpDFgRYw4w9puJhzDl0tyuqWjZ3M7XJuuG7mMbO");
