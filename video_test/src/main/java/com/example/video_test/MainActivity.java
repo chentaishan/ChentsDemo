@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.R
 
         mediaPlayer.prepareAsync();
 
+
+
         final SurfaceHolder holder = mSurfaceview.getHolder();
 
 
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.R
             }
         });
 
+
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
@@ -90,22 +93,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.R
             }
         });
 
-        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-
-                Log.d(TAG, "onError: "+what);
-                return false;
-            }
-        });
-
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-
-                Log.d(TAG, "onCompletion: ");
-            }
-        });
     }
 
     @Override

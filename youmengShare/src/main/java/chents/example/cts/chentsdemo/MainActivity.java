@@ -118,11 +118,13 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
                 image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
                 image.compressStyle = UMImage.CompressStyle.QUALITY;//质量压缩，适合长图的分享
-//                压缩格式设置
+                //压缩格式设置
                 image.compressFormat = Bitmap.CompressFormat.PNG;//用户分享透明背景的图片可以设置这种方式，但是qq好友，微信朋友圈，不支持透明背景图片，会变成黑色
 
-                new ShareAction(MainActivity.this).withText("hello")
-                        .withMedia(image).setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+                new ShareAction(MainActivity.this)
+                        .withText("hello")// 文本内容
+                        .withMedia(image)// 媒体内容
+                        .setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
                         .setCallback(shareListener).open();
 
                 Log.d(TAG, "onClick: ");

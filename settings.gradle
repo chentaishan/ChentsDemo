@@ -1,1 +1,1 @@
-include ':youmengShare', ':ConstraintLayoutDemo'
+include ':youmengShare', ':ConstraintLayoutDemo', ':video_test'
