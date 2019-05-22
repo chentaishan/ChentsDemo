@@ -8,8 +8,10 @@ import android.util.Log;
 
 public class MyBindService extends Service {
 
-    boolean isRunning;
-    MyBinder myBinder = new MyBinder();
+    private static final String TAG = "MyService";
+
+    private boolean isRunning;
+    private MyBinder myBinder = new MyBinder();
     private MyThread myThread;
 
     public  void start() {
@@ -42,12 +44,6 @@ public class MyBindService extends Service {
 
     public class MyBinder extends Binder {
 
-        public void call(int index) {
-
-            updateData(index);
-
-        }
-
         public MyBindService getService() {
 
             return MyBindService.this;
@@ -58,19 +54,13 @@ public class MyBindService extends Service {
     int index;
 
     public void updateData(int index) {
-
-
         Log.d(TAG, "updateData: hello world!!!!" + index);
-
     }
-
-    private static final String TAG = "MyService";
 
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "onBind: ");
         index = intent.getIntExtra("data", 0);
-
 
         return myBinder;
     }
@@ -80,7 +70,6 @@ public class MyBindService extends Service {
     public int onStartCommand(final Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: ");
 
-
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -88,7 +77,6 @@ public class MyBindService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
 
         Log.d(TAG, "onCreate: ");
     }
@@ -100,7 +88,7 @@ public class MyBindService extends Service {
 
         Log.d(TAG, "onDestroy: ");
 
-        myThread.stop();
+        myThread.stopThread();
     }
 
 
