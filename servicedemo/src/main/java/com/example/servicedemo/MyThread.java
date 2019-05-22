@@ -4,10 +4,10 @@ import android.util.Log;
 
 public class MyThread implements Runnable {
 
-    int index =0;
+    int index = 0;
 
     private static final String TAG = "MyThread";
-    private boolean canRun=true;
+    private boolean canRun = true;
 
 
     public MyThread(int index) {
@@ -15,7 +15,7 @@ public class MyThread implements Runnable {
     }
 
 
-    public void stop(){
+    public void stop() {
 
         this.canRun = false;
     }
@@ -24,18 +24,20 @@ public class MyThread implements Runnable {
     public void run() {
 
 
-
         try {
 
 
-            while (index >0&&canRun) {
+            while (index > 0 && canRun) {
 
                 Thread.sleep(1000);
                 index--;
 
 
-                Log.d(TAG, "run: "+index);
-                iUpdateProgress.updateUI(index);
+                Log.d(TAG, "run: " + index);
+                if (iUpdateProgress != null) {
+
+                    iUpdateProgress.updateUI(index);
+                }
 
             }
 
@@ -46,12 +48,13 @@ public class MyThread implements Runnable {
     }
 
 
-    IUpdateProgress  iUpdateProgress;
+    IUpdateProgress iUpdateProgress;
 
-    public void setiUpdateProgress(IUpdateProgress  iUpdateProgress){
-        this.iUpdateProgress= iUpdateProgress;
+    public void setiUpdateProgress(IUpdateProgress iUpdateProgress) {
+        this.iUpdateProgress = iUpdateProgress;
     }
-    interface IUpdateProgress{
+
+    interface IUpdateProgress {
         void updateUI(int progress);
     }
 }

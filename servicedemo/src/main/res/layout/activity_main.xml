@@ -10,14 +10,29 @@
 
     <Button
         android:id="@+id/play_click"
-        android:text="play"
+        android:text="play_绑定服务"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 
     <Button
         android:id="@+id/stop_click"
-        android:text="stop"
+        android:text="stop_绑定服务"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+    <Button
+        android:id="@+id/play_normal_click"
+        android:text="play_普通服务"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:id="@+id/stop_normal_click"
+        android:text="stop_普通服务"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView

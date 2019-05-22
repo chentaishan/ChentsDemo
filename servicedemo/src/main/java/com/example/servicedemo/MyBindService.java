@@ -6,7 +6,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-public class MyService extends Service {
+public class MyBindService extends Service {
 
     boolean isRunning;
     MyBinder myBinder = new MyBinder();
@@ -48,9 +48,9 @@ public class MyService extends Service {
 
         }
 
-        public MyService getService() {
+        public MyBindService getService() {
 
-            return MyService.this;
+            return MyBindService.this;
         }
 
     }

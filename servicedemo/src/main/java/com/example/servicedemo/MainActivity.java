@@ -18,10 +18,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mResult;
     private MyServiceConnection mConnection;
 
-    MyService service1;
+    MyBindService service1;
 
 
     private static final String TAG = "MainActivity";
+    /**
+     * play
+     */
+    private Button mPlayNormalClick;
+    /**
+     * stop
+     */
+    private Button mStopNormalClick;
 
     class MyServiceConnection implements ServiceConnection {
 
@@ -31,9 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             Log.d(TAG, "onServiceConnected: ");
 
-            MyService.MyBinder myBinder = (MyService.MyBinder) service;
+            MyBindService.MyBinder myBinder = (MyBindService.MyBinder) service;
             service1 = myBinder.getService();
-
 
 
             service1.start();
@@ -63,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mPlayClick.setOnClickListener(this);
         mStopClick.setOnClickListener(this);
+        mPlayNormalClick = (Button) findViewById(R.id.play_normal_click);
+        mPlayNormalClick.setOnClickListener(this);
+        mStopNormalClick = (Button) findViewById(R.id.stop_normal_click);
+        mStopNormalClick.setOnClickListener(this);
+        mResult.setOnClickListener(this);
     }
 
     @Override
@@ -72,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.play_click:
 
-                Intent intent = new Intent(this, MyService.class);
+                Intent intent = new Intent(this, MyBindService.class);
 
                 intent.putExtra("data", 10);
                 mConnection = new MyServiceConnection();
@@ -81,17 +93,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //参数 BIND_AUTO_CREATE：当服务存在时则直接绑定，当服务不存在时则创建服务并绑定
                 bindService(intent, mConnection, BIND_AUTO_CREATE);
 
-
-//                startService(new Intent(MainActivity.this,MyService.class));
-
                 break;
             case R.id.stop_click:
-//                stopService(new Intent(MainActivity.this,MyService.class));
-
-
                 unbindService(mConnection);
 
+
+
                 break;
+            case R.id.play_normal_click:
+                Intent intent1 = new Intent(this, MyNormalService.class);
+
+                startService(intent1);
+                break;
+            case R.id.stop_normal_click:
+                intent1 = new Intent(this, MyNormalService.class);
+                stopService(intent1);
+                break;
+
         }
     }
 
