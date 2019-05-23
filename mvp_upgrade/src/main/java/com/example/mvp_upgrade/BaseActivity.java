@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.mvp_upgrade.contract.BasePresenter;
-
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity {
 
    protected P presenter;

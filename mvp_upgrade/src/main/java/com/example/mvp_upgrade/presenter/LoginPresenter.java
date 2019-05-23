@@ -1,15 +1,14 @@
 package com.example.mvp_upgrade.presenter;
 
 import com.example.mvp_upgrade.ResultBean;
-import com.example.mvp_upgrade.contract.BasePresenter;
-import com.example.mvp_upgrade.contract.LoginContract;
 import com.example.mvp_upgrade.model.LoginModel;
+import com.example.mvp_upgrade.view.IView;
 
 public class LoginPresenter extends BasePresenter {
 
     private LoginModel loginModel;
 
-    public LoginPresenter(LoginContract.View iView) {
+    public LoginPresenter(IView iView) {
         super(iView);
     }
 

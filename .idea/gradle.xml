@@ -8,7 +8,12 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/ConstraintLayoutDemo" />
+            <option value="$PROJECT_DIR$/gittest" />
+            <option value="$PROJECT_DIR$/mvp_upgrade" />
+            <option value="$PROJECT_DIR$/servicedemo" />
+            <option value="$PROJECT_DIR$/video_test" />
+            <option value="$PROJECT_DIR$/youmengShare" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
