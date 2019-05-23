@@ -12,8 +12,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+
         Intent intent = new Intent();
 
+
+
+        // 完成功能啦！
+        // dev2--commits
 
     }
 }
