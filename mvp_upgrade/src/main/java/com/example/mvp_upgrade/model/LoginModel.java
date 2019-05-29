@@ -1,7 +1,6 @@
 package com.example.mvp_upgrade.model;
 
 import com.example.mvp_upgrade.ResultBean;
-import com.example.mvp_upgrade.contract.LoginContract;
 
 import java.util.Random;
 

@@ -1,13 +1,11 @@
 package com.example.mvp_upgrade;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.mvp_upgrade.contract.LoginContract;
 import com.example.mvp_upgrade.presenter.LoginPresenter;
 
 public class MainActivity extends BaseActivity<LoginPresenter> implements LoginContract.View<ResultBean>, View.OnClickListener {

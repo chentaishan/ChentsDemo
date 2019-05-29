@@ -1,1 +1,4 @@
 include ':youmengShare', ':ConstraintLayoutDemo', ':video_test'
+include ':servicedemo'
+include ':mvp_upgrade'
+include ':gittest'
