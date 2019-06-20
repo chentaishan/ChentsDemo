@@ -227,7 +227,9 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreateContextMenu(menu, v, menuInfo);
 
 
-        menu.add(GROUP_ID,ITEM_ID,0,"删除");
+        getMenuInflater().inflate(R.menu.context_menu,menu);
+
+//        menu.add(GROUP_ID,ITEM_ID,0,"删除");
     }
 
 
@@ -237,7 +239,11 @@ public class MainActivity extends AppCompatActivity  {
 
         switch (item.getItemId()){
 
-            case ITEM_ID:
+            case R.id.menu_2:
+
+                Log.d(TAG, "onContextItemSelected: "+item.getItemId());
+                break;
+            case R.id.menu_3:
 
                 Log.d(TAG, "onContextItemSelected: "+item.getItemId());
                 break;
