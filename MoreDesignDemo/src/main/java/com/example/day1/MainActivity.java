@@ -7,16 +7,28 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.day1.bean.Food;
+import com.example.day1.utils.Contants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -25,7 +37,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity  {
 
     /**
      * okhttp 测试
@@ -39,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Toolbar mToolbar;
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerlayout;
+    private RecyclerView mViewRecycler;
+    private int pageIndex=1;
+    private MyAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +63,78 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initListener();
 
 
+        initData();
+    }
+
+    private void initData() {
+
+
+        Log.d(TAG, "initData: url"+(Contants.foodUrl +pageIndex));
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+        final Request request = new Request.Builder()
+                .url(Contants.foodUrl +pageIndex)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: ");
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String result = response.body().string();
+
+                Log.d(TAG, "onResponse: "+result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+
+                    //json 解析
+                    JSONArray array = jsonObject.getJSONArray("data");
+                    // title pic
+                    final ArrayList<Food.DataBean> dataBeans = new ArrayList<>();
+
+
+                    for (int i = 0; i <array.length() ; i++) {
+
+                        JSONObject obj= array.getJSONObject(i);
+                        Food.DataBean dataBean = new Food.DataBean();
+
+                        dataBean.setTitle(obj.optString("title"));
+                        dataBean.setPic(obj.optString("pic"));
+
+                        dataBeans.add(dataBean);
+                    }
+
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (pageIndex==1){
+                                myAdapter.initData(dataBeans);
+
+                            }else{
+                                myAdapter.loadMoreData(dataBeans);
+
+                            }
+
+
+                        }
+                    });
+
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
     }
 
     private void initListener() {
@@ -89,12 +176,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
-        mClick = (Button) findViewById(R.id.click);
-        mClick.setOnClickListener(this);
-        mResutl = (TextView) findViewById(R.id.resutl);
-        mPostClick = (Button) findViewById(R.id.post_click);
-        mPostClick.setOnClickListener(this);
-        mResutl.setOnClickListener(this);
+
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         // Logo
         mToolbar.setLogo(R.drawable.home_highlight);
@@ -105,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //设置toolbar
         setSupportActionBar(mToolbar);
         //左边的小箭头（注意某些版本api需要在setSupportActionBar(toolbar)之后才有效果）
-        mToolbar.setNavigationIcon(R.drawable.home_unselected);
+        mToolbar.setNavigationIcon(R.drawable.back);
         //菜单点击事件（注意需要在setSupportActionBar(toolbar)之后才有效果）
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -123,135 +205,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
         mDrawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
-    }
+        mViewRecycler = (RecyclerView) findViewById(R.id.recycler_view);
 
 
-    @SuppressLint("RestrictedApi")
-    @Override
-    protected boolean onPrepareOptionsPanel(View view, Menu menu) {
+        registerForContextMenu(mViewRecycler);
 
-        try {
-            Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
-            method.setAccessible(true);
-            method.invoke(menu, true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return super.onPrepareOptionsPanel(view, menu);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            default:
-                break;
-            case R.id.click:
-
-                testOkhttp();
-                break;
-            case R.id.post_click:
-                testPostOkhttp();
-                break;
-            case R.id.resutl:
-                break;
-        }
-    }
-
-    String loginUrl = "http://yun918.cn/study/public/index.php/login";
-
-    /**
-     * 测试post 表单形式
-     * <p>
-     * 登录接口：http://yun918.cn/study/public/index.php/login
-     * post 参数（String username,String password） 注：username可以是注册的用户名或手机号
-     */
-    private void testPostOkhttp() {
-
-        // 1.创建ok对象
-        OkHttpClient okHttpClient = new OkHttpClient();
-
-        FormBody formBody = new FormBody.Builder()
-                .add("username", "11")
-                .add("password", "11")
-                .build();
-
-        // 创建request
-        Request request = new Request.Builder()
-                .post(formBody)
-                .url(loginUrl)
-                .build();
-
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "onFailure: " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                final String result = response.body().string();
-                Log.d(TAG, "onResponse: " + result);
-
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mResutl.setText(result);
-                    }
-                });
-            }
-        });
-
-
+        mViewRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mViewRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        myAdapter = new MyAdapter(this);
+        mViewRecycler.setAdapter(myAdapter);
     }
 
 
     private static final String TAG = "MainActivity";
-
-    /**
-     * 测试 ok
-     * 1.建造者模式
-     * 2.同步异步
-     * 3.Response
-     */
-    private void testOkhttp() {
-
-        OkHttpClient okHttpClient = new OkHttpClient();
-
-        // 建造者 模式  --构建和表示分离
-        Request build = new Request.Builder()
-                .url("http://apicloud.mob.com/appstore/health/search?key=1ac78a8602d58&name=%E8%BD%AC%E6%B0%A8%E9%85%B6")
-                .build();
-        Call call = okHttpClient.newCall(build);
-
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "onFailure: " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String result = response.body().string();
+    private int GROUP_ID = 0;
+    private final  int ITEM_ID = 0;
 
 
-                Log.d(TAG, "onResponse: " + result + "  是否是主线程===" + (Looper.getMainLooper() == Looper.myLooper()));
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
 
 
-                //handler  runonUIThread
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        mResutl.setText(result);
-                    }
-                });
-
-            }
-        });
+        menu.add(GROUP_ID,ITEM_ID,0,"删除");
+    }
 
 
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+
+        switch (item.getItemId()){
+
+            case ITEM_ID:
+
+                Log.d(TAG, "onContextItemSelected: "+item.getItemId());
+                break;
+        }
+
+        return super.onContextItemSelected(item);
     }
 }

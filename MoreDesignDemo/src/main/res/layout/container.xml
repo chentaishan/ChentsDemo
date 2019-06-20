@@ -16,21 +16,8 @@
     </android.support.v7.widget.Toolbar>
 
 
-    <Button
-        android:id="@+id/click"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="okhttp 测试" />
-
-    <Button
-        android:id="@+id/post_click"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="okhttp post测试" />
-
-    <TextView
-        android:id="@+id/resutl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 </LinearLayout>
