@@ -8,8 +8,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -156,21 +158,7 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
 
-            case R.id.menu_1:
-
-                Log.d(TAG, "onOptionsItemSelected: " + item.getTitle());
-                break;
-
-            case R.id.menu_2:
-                Log.d(TAG, "onOptionsItemSelected: " + item.getTitle());
-                break;
-
-            case R.id.menu_3:
-                Log.d(TAG, "onOptionsItemSelected: " + item.getTitle());
-                break;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -193,6 +181,25 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Log.d(TAG, "onMenuItemClick: " + menuItem.getTitle());
+
+                switch (menuItem.getItemId()) {
+
+                    case R.id.menu_1:
+
+                        mViewRecycler.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                        Log.d(TAG, "onOptionsItemSelected: " + menuItem.getTitle());
+                        break;
+
+                    case R.id.menu_2:
+                        mViewRecycler.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
+                        Log.d(TAG, "onOptionsItemSelected: " + menuItem.getTitle());
+                        break;
+
+                    case R.id.menu_3:
+                        mViewRecycler.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
+                        Log.d(TAG, "onOptionsItemSelected: " + menuItem.getTitle());
+                        break;
+                }
                 return false;
             }
         });

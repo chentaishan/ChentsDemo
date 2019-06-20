@@ -10,15 +10,15 @@
 
     <item
         android:id="@+id/menu_1"
-        android:icon="@drawable/home_highlight"
-        android:title="设置"
+
+        android:title="列表"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_2"
-        android:title="搜索" />
+        android:title="网格" />
 
     <item
         android:id="@+id/menu_3"
-        android:title="我的" />
+        android:title="瀑布流" />
 </menu>
