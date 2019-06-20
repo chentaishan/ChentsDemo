@@ -1,0 +1,29 @@
+HTTP (Hyper Text Transfer Protocol---超文本传输协议）
+
+url  资源地址
+
+http://baidu.com/index.html
+
+协议：主机名：路径及文件
+
+    get  从服务器获取数据
+
+    http://baidu.com/3.0/index.html?name =xx&&value =22
+
+    post  向指定的服务器 提交数据
+
+    FormBoody 表单对象
+
+    登录接口：http://yun918.cn/study/public/index.php/login
+    post 参数（String username,String password） 注：username可以是注册的用户名或手机号
+
+
+
+HttpUrlConnection是一种多用途、轻量极的HTTP客户端。 虽然HttpURLConnection的API提供的比较简单，
+但是同时这也使得我们可以更加容易地去使 用和扩展它。
+通过调用openCollection() 方法获得对象实例，默认是带gzip压缩的；
+
+
+同步：阻塞式 ，在当前线程里执行逻辑
+
+异步：并发式，会自动新建线程来处理业务逻辑
