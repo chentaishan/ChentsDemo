@@ -1,9 +1,9 @@
 package com.example.day1;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +19,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import android.support.design.widget.TabLayout;
+
 import android.widget.TextView;
 
 import com.example.day1.bean.Food;
@@ -29,17 +32,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     /**
      * okhttp 测试
@@ -53,9 +55,10 @@ public class MainActivity extends AppCompatActivity  {
     private Toolbar mToolbar;
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerlayout;
-    private RecyclerView mViewRecycler;
-    private int pageIndex=1;
+    private int pageIndex = 1;
     private MyAdapter myAdapter;
+    private ViewPager mViewPager;
+    private TabLayout mTablayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,18 +67,35 @@ public class MainActivity extends AppCompatActivity  {
         initView();
         initListener();
 
+        initViewPager();
 
         initData();
+    }
+
+    private void initViewPager() {
+
+        List<Fragment> fragmentList = new ArrayList<>();
+
+        fragmentList.add(new HomeFragment());
+
+
+        mTablayout.addTab(mTablayout.newTab().setText("Tab2"));
+
+
+        mTablayout.addTab(mTablayout.newTab().setText("Tab3"));
+
+
+
     }
 
     private void initData() {
 
 
-        Log.d(TAG, "initData: url"+(Contants.foodUrl +pageIndex));
+        Log.d(TAG, "initData: url" + (Contants.foodUrl + pageIndex));
         OkHttpClient okHttpClient = new OkHttpClient();
 
         final Request request = new Request.Builder()
-                .url(Contants.foodUrl +pageIndex)
+                .url(Contants.foodUrl + pageIndex)
                 .build();
 
         okHttpClient.newCall(request).enqueue(new Callback() {
@@ -90,7 +110,7 @@ public class MainActivity extends AppCompatActivity  {
 
                 String result = response.body().string();
 
-                Log.d(TAG, "onResponse: "+result);
+                Log.d(TAG, "onResponse: " + result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
 
@@ -100,9 +120,9 @@ public class MainActivity extends AppCompatActivity  {
                     final ArrayList<Food.DataBean> dataBeans = new ArrayList<>();
 
 
-                    for (int i = 0; i <array.length() ; i++) {
+                    for (int i = 0; i < array.length(); i++) {
 
-                        JSONObject obj= array.getJSONObject(i);
+                        JSONObject obj = array.getJSONObject(i);
                         Food.DataBean dataBean = new Food.DataBean();
 
                         dataBean.setTitle(obj.optString("title"));
@@ -115,10 +135,10 @@ public class MainActivity extends AppCompatActivity  {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (pageIndex==1){
+                            if (pageIndex == 1) {
                                 myAdapter.initData(dataBeans);
 
-                            }else{
+                            } else {
                                 myAdapter.loadMoreData(dataBeans);
 
                             }
@@ -126,8 +146,6 @@ public class MainActivity extends AppCompatActivity  {
 
                         }
                     });
-
-
 
 
                 } catch (JSONException e) {
@@ -159,7 +177,6 @@ public class MainActivity extends AppCompatActivity  {
     public boolean onOptionsItemSelected(MenuItem item) {
 
 
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -186,17 +203,17 @@ public class MainActivity extends AppCompatActivity  {
 
                     case R.id.menu_1:
 
-                        mViewRecycler.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+//                        mViewRecycler.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                         Log.d(TAG, "onOptionsItemSelected: " + menuItem.getTitle());
                         break;
 
                     case R.id.menu_2:
-                        mViewRecycler.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
+//                        mViewRecycler.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
                         Log.d(TAG, "onOptionsItemSelected: " + menuItem.getTitle());
                         break;
 
                     case R.id.menu_3:
-                        mViewRecycler.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
+//                        mViewRecycler.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
                         Log.d(TAG, "onOptionsItemSelected: " + menuItem.getTitle());
                         break;
                 }
@@ -212,21 +229,23 @@ public class MainActivity extends AppCompatActivity  {
 
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
         mDrawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
-        mViewRecycler = (RecyclerView) findViewById(R.id.recycler_view);
 
 
-        registerForContextMenu(mViewRecycler);
 
-        mViewRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mViewRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        myAdapter = new MyAdapter(this);
-        mViewRecycler.setAdapter(myAdapter);
+//        registerForContextMenu(mViewRecycler);
+//
+//        mViewRecycler.setLayoutManager(new LinearLayoutManager(this));
+//        mViewRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+//        myAdapter = new MyAdapter(this);
+//        mViewRecycler.setAdapter(myAdapter);
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mTablayout = (TabLayout) findViewById(R.id.tablayout);
     }
 
 
     private static final String TAG = "MainActivity";
     private int GROUP_ID = 0;
-    private final  int ITEM_ID = 0;
+    private final int ITEM_ID = 0;
 
 
     @Override
@@ -234,7 +253,7 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreateContextMenu(menu, v, menuInfo);
 
 
-        getMenuInflater().inflate(R.menu.context_menu,menu);
+        getMenuInflater().inflate(R.menu.context_menu, menu);
 
 //        menu.add(GROUP_ID,ITEM_ID,0,"删除");
     }
@@ -244,15 +263,15 @@ public class MainActivity extends AppCompatActivity  {
     public boolean onContextItemSelected(MenuItem item) {
 
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case R.id.menu_2:
 
-                Log.d(TAG, "onContextItemSelected: "+item.getItemId());
+                Log.d(TAG, "onContextItemSelected: " + item.getItemId());
                 break;
             case R.id.menu_3:
 
-                Log.d(TAG, "onContextItemSelected: "+item.getItemId());
+                Log.d(TAG, "onContextItemSelected: " + item.getItemId());
                 break;
         }
 

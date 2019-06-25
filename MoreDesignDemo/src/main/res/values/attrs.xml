@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TabLayout">
+        <!--指示器颜色-->
+        <attr name="tabIndicatorColor" format="color" />
+        <!--指示器高度-->
+        <attr name="tabIndicatorHeight" format="dimension" />
+        <!--tabs距TabLayout开始位置的偏移量，但app:tabMode="scrollable"才生效-->
+        <attr name="tabContentStart" format="dimension" />
+        <!--仅是Tab背景，设置TabLayout背景用android:background-->
+        <attr name="tabBackground" format="reference" />
+        <!--默认fixed，所有Tab只能在屏幕内显示，超出会被挤压；scrollable,tab数量多会超出屏幕，可滑动-->
+        <attr name="tabMode">
+            <enum name="scrollable" value="0" />
+            <enum name="fixed" value="1" />
+        </attr>
+        <!--默认fill，tab填满TabLayout,但tabMode=“fixed”才生效；center，tabs位于TabLayout的中间-->
+        <attr name="tabGravity">
+            <enum name="fill" value="0" />
+            <enum name="center" value="1" />
+        </attr>
+        <!--Tab的最小宽度-->
+        <attr name="tabMinWidth" format="dimension" />
+        <!--Tab的最大宽度-->
+        <attr name="tabMaxWidth" format="dimension" />
+        <!--Tab文本设置样式-->
+        <attr name="tabTextAppearance" format="reference" />
+        <!--Tab未选中字体颜色-->
+        <attr name="tabTextColor" format="color" />
+        <!--Tab选中字体颜色-->
+        <attr name="tabSelectedTextColor" format="color" />
+        <!--Tab内填充相关-->
+        <attr name="tabPaddingStart" format="dimension" />
+        <attr name="tabPaddingTop" format="dimension" />
+        <attr name="tabPaddingEnd" format="dimension" />
+        <attr name="tabPaddingBottom" format="dimension" />
+        <attr name="tabPadding" format="dimension" />
+    </declare-styleable>
+</resources>
