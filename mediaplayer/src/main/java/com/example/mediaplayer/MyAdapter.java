@@ -1,0 +1,64 @@
+package com.example.mediaplayer;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+
+    Context context;
+    List<String> pathList = new ArrayList<>();
+
+    public MyAdapter(Context context) {
+        this.context = context;
+    }
+
+
+    public void initData(List<String> pathList) {
+        this.pathList.clear();
+        this.pathList.addAll(pathList);
+        notifyDataSetChanged();
+
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View root = LayoutInflater.from(context).inflate(R.layout.recycler_item, viewGroup, false);
+        return new ViewHolder(root);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+
+        viewHolder.title.setText(pathList.get(i));
+    }
+
+    public String getItemString(int pos) {
+
+        return pathList.get(pos);
+    }
+
+    @Override
+    public int getItemCount() {
+        return pathList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView title;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            title = itemView.findViewById(R.id.textView);
+        }
+    }
+}
