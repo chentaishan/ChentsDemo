@@ -1,5 +1,6 @@
 package com.example.testcontentprovider;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,44 +41,74 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.button:
 
+                insertItem();
 
-                queryAll();
+
                 // TODO 19/05/29
                 break;
             case R.id.button2:
                 // TODO 19/05/29
+
+                deleteItem();
                 break;
             case R.id.button3:
                 // TODO 19/05/29
+                updateItem();
                 break;
             case R.id.button4:
                 // TODO 19/05/29
+                queryAll();
                 break;
             default:
                 break;
         }
     }
 
+    private void updateItem() {
+        final Uri parse = Uri.parse("content://com.example.testcontentprovider2.provider/user/update");
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("name", "TTT");
+        getContentResolver().update(parse,contentValues,"id=?",new String[]{8+""});
+
+    }
+
+    private void deleteItem() {
+        final Uri parse = Uri.parse("content://com.example.testcontentprovider2.provider/user/delete");
+
+        getContentResolver().delete(parse,"id=?",new String[]{7+""});
+
+
+    }
+
+    private void insertItem() {
+        final Uri parse = Uri.parse("content://com.example.testcontentprovider2.provider/user/insert");
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id", 89);
+        contentValues.put("name", "YYY");
+        getContentResolver().insert(parse, contentValues);
+
+
+    }
+
     private void queryAll() {
 
-        final Uri parse = Uri.parse("content://com.example.testcontentprovider2.provider/user");
-
+        final Uri parse = Uri.parse("content://com.example.testcontentprovider2.provider/user/query");
 
         final Cursor cursor = getContentResolver().query(parse, null, null, null, null);
 
         StringBuffer stringBuffer = new StringBuffer();
 
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
 
             int id = cursor.getInt(cursor.getColumnIndex("id"));
-            String name= cursor.getString(cursor.getColumnIndex("name"));
-            stringBuffer.append(id+"--"+name+"/n");
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            stringBuffer.append(id + "--" + name + "/n");
 
         }
 
         cursor.close();
-
-
 
         mResult.setText(stringBuffer.toString());
 

@@ -2,6 +2,7 @@ package chents.example.cts.chentsdemo;
 
 import android.app.Application;
 
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
@@ -19,7 +20,7 @@ public class MyApp extends Application {
          */
         UMConfigure.init(this, "5ca360b02036571f99001242", null, UMConfigure.DEVICE_TYPE_PHONE, "");
 
-
+        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.LEGACY_MANUAL);
 
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         //豆瓣RENREN平台目前只能在服务器端配置

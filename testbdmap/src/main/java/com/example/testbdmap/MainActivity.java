@@ -1,5 +1,6 @@
 package com.example.testbdmap;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,34 +13,22 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.bikenavi.BikeNavigateHelper;
+import com.baidu.mapapi.bikenavi.adapter.IBRoutePlanListener;
+import com.baidu.mapapi.bikenavi.model.BikeRoutePlanError;
+import com.baidu.mapapi.bikenavi.params.BikeNaviLaunchParam;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
-import com.baidu.mapapi.search.poi.PoiCitySearchOption;
-import com.baidu.mapapi.search.poi.PoiDetailResult;
-import com.baidu.mapapi.search.poi.PoiDetailSearchResult;
-import com.baidu.mapapi.search.poi.PoiIndoorResult;
-import com.baidu.mapapi.search.poi.PoiResult;
-import com.baidu.mapapi.search.poi.PoiSearch;
-import com.baidu.mapapi.search.route.BikingRouteResult;
-import com.baidu.mapapi.search.route.DrivingRouteResult;
-import com.baidu.mapapi.search.route.IndoorRouteResult;
-import com.baidu.mapapi.search.route.MassTransitRouteResult;
-import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
-import com.baidu.mapapi.search.route.PlanNode;
-import com.baidu.mapapi.search.route.RoutePlanSearch;
-import com.baidu.mapapi.search.route.TransitRouteResult;
-import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
-import com.baidu.mapapi.search.route.WalkingRouteResult;
+
+import com.baidu.mapapi.walknavi.WalkNavigateHelper;
+import com.baidu.mapapi.walknavi.adapter.IWEngineInitListener;
 import com.example.testbdmap.overlayutil.PoiOverlay;
 import com.example.testbdmap.overlayutil.WalkingRouteOverlay;
 
@@ -66,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private BaiduMap map;
     private PoiSearch mPoiSearch;
     private RoutePlanSearch mSearch;
+    private Button mClick5;
+    private LatLng startPt;
+    private LatLng endPt;
+    private BikeNaviLaunchParam param;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +107,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         mSearch = RoutePlanSearch.newInstance();
-        mSearch.setOnGetRoutePlanResultListener( onGetRoutePlanResultListener);
+        mSearch.setOnGetRoutePlanResultListener(onGetRoutePlanResultListener);
+        mClick5 = (Button) findViewById(R.id.click5);
+        mClick5.setOnClickListener(this);
     }
 
     @Override
@@ -174,9 +169,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .from(stNode)
                         .to(enNode));
                 break;
+            case R.id.click5:// TODO 19/07/03
+
+                nvgation();
+
+
+                break;
             default:
                 break;
         }
+    }
+
+    private void nvgation() {
+
+
+        // 获取导航控制类
+// 引擎初始化
+        WalkNavigateHelper.getInstance().initNaviEngine(this, new IWEngineInitListener() {
+
+            @Override
+            public void engineInitSuccess() {
+                //引擎初始化成功的回调
+                routeWalkPlanWithParam();
+            }
+
+            @Override
+            public void engineInitFail() {
+                //引擎初始化失败的回调
+            }
+        });
+    }
+
+    private void routeWalkPlanWithParam() {
+
+
+        //起终点位置
+        startPt = new LatLng(40.047416,116.312143);
+        endPt = new LatLng(40.048424, 116.313513);
+//构造BikeNaviLaunchParam
+//.vehicle(0)默认的普通骑行导航
+        param = new BikeNaviLaunchParam().stPt(startPt).endPt(endPt).vehicle(0);
+
+        //发起算路
+        BikeNavigateHelper.getInstance().routePlanWithParams(param, new IBRoutePlanListener() {
+            @Override
+            public void onRoutePlanStart() {
+                //执行算路开始的逻辑
+            }
+
+            @Override
+            public void onRoutePlanSuccess() {
+                //算路成功
+                //跳转至诱导页面
+
+                Log.d(TAG, "onRoutePlanSuccess: 计算完成");
+                Intent intent = new Intent(MainActivity.this, BNaviGuideActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onRoutePlanFail(BikeRoutePlanError bikeRoutePlanError) {
+                //执行算路失败的逻辑
+            }
+        });
     }
 
     private void marker() {
@@ -291,10 +346,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mMapView.getMap().setMyLocationConfiguration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING,
                 true,
                 BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher_background)
-        ,R.color.colorAccent,R.color.colorPrimary));
+                , R.color.colorAccent, R.color.colorPrimary));
     }
-
-
 
 
     OnGetPoiSearchResultListener onGetPoiSearchResultListener = new OnGetPoiSearchResultListener() {
@@ -308,8 +361,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 PoiOverlay poiOverlay = new PoiOverlay(map);
 
 
-
-
                 //设置Poi检索数据
                 poiOverlay.setData(poiResult);
 
@@ -319,14 +370,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }
+
         @Override
         public void onGetPoiDetailResult(PoiDetailSearchResult poiDetailSearchResult) {
 
         }
+
         @Override
         public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
 
         }
+
         //废弃
         @Override
         public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {

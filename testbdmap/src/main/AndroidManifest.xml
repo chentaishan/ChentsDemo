@@ -43,9 +43,13 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="hB1cOtyIN7tl5497zmDTWGjZb6rk9KOn" />
+
+
         <service android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote"/>
+
+        <activity android:name=".BNaviGuideActivity"/>
     </application>
 
 </manifest>

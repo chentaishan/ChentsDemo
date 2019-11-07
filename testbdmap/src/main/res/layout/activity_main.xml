@@ -35,9 +35,13 @@
         <Button
             android:id="@+id/click4"
             android:layout_width="wrap_content"
+            android:text="规划"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/click5"
+            android:layout_width="wrap_content"
             android:text="导航"
             android:layout_height="wrap_content" />
-
     </LinearLayout>
 
 

@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mvp_upgrade.presenter.BasePresenter;
+
 /**
  * 抽取  view  P 懒加载
  */

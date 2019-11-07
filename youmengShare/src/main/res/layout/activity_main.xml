@@ -13,4 +13,29 @@
         android:text="share"
         />
 
+
+
+    <Button
+        android:id="@+id/sina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sina登录"
+        />
+
+
+    <Button
+        android:id="@+id/qq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="QQ登录"
+        />
+
+
+    <Button
+        android:id="@+id/wechat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="微信登录"
+        />
+
 </LinearLayout>

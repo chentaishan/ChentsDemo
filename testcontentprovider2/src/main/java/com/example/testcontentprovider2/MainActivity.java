@@ -1,20 +1,25 @@
 package com.example.testcontentprovider2;
 
-import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button mClick;
     private TextView mResult;
+    private EditText mInput;
+    private Button mDataInsert;
+    private EditText mDelete;
+    private Button mDataDelete;
+    private EditText mUpdate;
+    private Button mDataUpdate;
+    private Button mAllQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,65 +27,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initView();
 
-        final MyOpenHelper myOpenHelper = MyApp.getMyOpenHelper();
-
-        final SQLiteDatabase writableDatabase = myOpenHelper.getWritableDatabase();
-        for (int i = 0; i < 10; i++) {
-
-
-            ContentValues contentValues = new ContentValues();
-
-            contentValues.put("id", i + "");
-            contentValues.put("name", i + "gggg");
-
-
-            writableDatabase.insert("user", "", contentValues);
-        }
 
     }
 
     private void initView() {
-        mClick = (Button) findViewById(R.id.click);
-        mClick.setOnClickListener(this);
+
         mResult = (TextView) findViewById(R.id.result);
+        mInput = (EditText) findViewById(R.id.input);
+        mDataInsert = (Button) findViewById(R.id.insert_data);
+        mDataInsert.setOnClickListener(this);
+        mDelete = (EditText) findViewById(R.id.delete);
+        mDataDelete = (Button) findViewById(R.id.delete_data);
+        mDataDelete.setOnClickListener(this);
+        mUpdate = (EditText) findViewById(R.id.update);
+        mDataUpdate = (Button) findViewById(R.id.update_data);
+        mDataUpdate.setOnClickListener(this);
+        mAllQuery = (Button) findViewById(R.id.query_all);
+        mAllQuery.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.click:
-                // TODO 19/05/29
 
-                queryAll();
+            case R.id.insert_data:// TODO 19/08/08
+                String input = mInput.getText().toString();
+                if (input == null) {
+                    return;
+                }
+
+                String params[] ;
+                if (input.contains(",")){
+                    params = input.split(",");
+
+                    MyOpenHelper.getInstance(this).insert(params[0],params[1]);
+                }
+
+
+
+                break;
+            case R.id.delete_data:// TODO 19/08/08
+                  input = mDelete.getText().toString();
+                if (input == null) {
+                    return;
+                }
+                MyOpenHelper.getInstance(this).delete(input);
+                break;
+            case R.id.update_data:// TODO 19/08/08
+                  input = mUpdate.getText().toString();
+                if (input == null) {
+                    return;
+                }
+                if (input.contains(",")){
+                    params = input.split(",");
+                }else{
+                    return;
+                }
+
+                MyOpenHelper.getInstance(this).update(params[0],params[1]);
+                break;
+            case R.id.query_all:// TODO 19/08/08
+                final String s = MyOpenHelper.getInstance(this).queryAll();
+
+                mResult.setText(s);
+
                 break;
             default:
                 break;
         }
     }
 
-    private void queryAll() {
 
-        final Uri parse = Uri.parse("content://com.example.testcontentprovider2.provider/user");
-
-
-        final Cursor cursor = getContentResolver().query(parse, null, null, null, null);
-
-        StringBuffer stringBuffer = new StringBuffer();
-
-        while (cursor.moveToNext()){
-
-            int id = cursor.getInt(cursor.getColumnIndex("id"));
-            String name= cursor.getString(cursor.getColumnIndex("name"));
-            stringBuffer.append(id+"--"+name+"/n");
-
-        }
-
-        cursor.close();
-
-
-
-        mResult.setText(stringBuffer.toString());
-
-
-    }
 }
