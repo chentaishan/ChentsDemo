@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,5 +16,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         Picasso.with(this).load("").into(new ImageView(this));
+        Glide.with(this).load("").into(new ImageView(this));
     }
 }
