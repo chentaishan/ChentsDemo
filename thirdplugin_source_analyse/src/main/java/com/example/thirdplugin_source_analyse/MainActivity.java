@@ -7,6 +7,14 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -17,5 +25,22 @@ public class MainActivity extends AppCompatActivity {
 
         Picasso.with(this).load("").into(new ImageView(this));
         Glide.with(this).load("").into(new ImageView(this));
+
+
+        final OkHttpClient okHttpClient = new OkHttpClient();
+
+        final Request builder = new Request.Builder()
+                .url("").build();
+        okHttpClient.newCall(builder).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+            }
+        });
     }
 }

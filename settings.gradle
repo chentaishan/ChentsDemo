@@ -1,4 +1,5 @@
-include ':day11', ':wanandroiddemo', ':permissiondemo'
+include ':thirdplugin_source_analyse'
+//include ':day11', ':wanandroiddemo', ':permissiondemo'
  include':mediaplayer'
 //include ':jgdemo', ':JPushExample(1395438)', ':jnidemo', ':jiyun_5', ':notifactiondemo', ':fragmentdemo'
 //include ':youmengShare', ':testyomen'
