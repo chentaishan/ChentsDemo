@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <include layout="@layout/style_1"/>
+<!--    <include layout="@layout/style_1"/>-->
 
 
 </LinearLayout>
