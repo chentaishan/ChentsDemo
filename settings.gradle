@@ -12,4 +12,4 @@
 //include ':testcontentprovider'
 //include ':testcontentprovider2'
 //include ':MoreDesignDemo'
-include ':thirdplugin_source_analyse'
+include ':thirdplugin_source_analyse', ':videoplayer'
